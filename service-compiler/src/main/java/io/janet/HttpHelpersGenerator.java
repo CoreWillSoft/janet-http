@@ -28,6 +28,8 @@ import io.janet.body.ActionBody;
 import io.janet.body.BytesArrayBody;
 import io.janet.body.FileBody;
 import io.janet.body.util.StreamUtil;
+import io.janet.compiler.utils.Generator;
+import io.janet.compiler.utils.TypeUtils;
 import io.janet.converter.Converter;
 import io.janet.converter.ConverterException;
 import io.janet.http.annotations.Body;
@@ -44,8 +46,6 @@ import io.janet.http.annotations.Url;
 import io.janet.http.model.Header;
 import io.janet.http.model.MultipartRequestBody;
 import io.janet.internal.TypeToken;
-import io.janet.compiler.utils.Generator;
-import io.janet.compiler.utils.TypeUtils;
 import io.janet.util.ElementResolver;
 
 
@@ -141,7 +141,8 @@ public class HttpHelpersGenerator extends Generator<HttpActionClass> {
     private void addRequestUrl(HttpActionClass actionClass, MethodSpec.Builder builder) {
         List<Element> elements = actionClass.getAnnotatedElements(Url.class);
         if (!elements.isEmpty()) {
-            builder.addStatement("requestBuilder.setUrl(action.$L)", elements.get(0));
+            String accessibleFieldName = resolver.resolveAccessibleFieldNameToRead(actionClass.getTypeElement(), elements.get(0));
+            builder.addStatement("requestBuilder.setUrl(action.$L)", accessibleFieldName);
         }
     }
 
@@ -176,7 +177,8 @@ public class HttpHelpersGenerator extends Generator<HttpActionClass> {
 
     private void addRequestBody(HttpActionClass actionClass, MethodSpec.Builder builder) {
         for (Element element : actionClass.getAnnotatedElements(Body.class)) {
-            builder.addStatement("requestBuilder.setBody(action.$L)", element);
+            String accessibleFieldName = resolver.resolveAccessibleFieldNameToRead(actionClass.getTypeElement(), element);
+            builder.addStatement("requestBuilder.setBody(action.$L)", accessibleFieldName);
             break;
         }
     }
@@ -346,7 +348,7 @@ public class HttpHelpersGenerator extends Generator<HttpActionClass> {
             ResponseHeader annotation = element.getAnnotation(ResponseHeader.class);
             String fieldAddress = getFieldAddress(actionClass, element);
             builder.beginControlFlow("if ($S.equals(header.getName()))", annotation.value());
-            builder.addStatement(fieldAddress + resolver.resolveAccessibleFieldNameToWrite(actionClass.getTypeElement(), element,"header.getValue()"));
+            builder.addStatement(fieldAddress + resolver.resolveAccessibleFieldNameToWrite(actionClass.getTypeElement(), element, "header.getValue()"));
             builder.endControlFlow();
         }
         builder.endControlFlow();
