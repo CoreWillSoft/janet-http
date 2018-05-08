@@ -100,9 +100,10 @@ public class ElementResolver {
 
     public String resolveAccessibleFieldNameToWrite(TypeElement typeElement, Element element, String value) {
         if (element.getKind() != ElementKind.FIELD) throw new IllegalArgumentException("Element must be field");
-        final String fieldName = element.getSimpleName().toString();
+        String fieldName = element.getSimpleName().toString();
         if (isKotlinClass(typeElement)) {
             Element methodElement = null;
+            if (Pattern.compile("^is[A-Z]+.*$").matcher(fieldName).matches()) fieldName = fieldName.replace("is", "");
             String methodByFieldName = String.format(Locale.US, "set%s", capitalize(fieldName));
             for (Element e : elementUtils.getAllMembers(typeElement)) {
                 if (e.getKind() == ElementKind.METHOD && e.getSimpleName().toString()
