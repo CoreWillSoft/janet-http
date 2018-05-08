@@ -26,7 +26,7 @@ class FieldsModifiersValidator<T extends ActionClass> implements Validator<T> {
             if (element.getKind() != ElementKind.FIELD) continue;
             boolean hasPrivateModifier = element.getModifiers().contains(Modifier.PRIVATE);
             boolean hasStaticModifier = element.getModifiers().contains(Modifier.STATIC);
-            if (resolver.isKotlinClass(value.getTypeElement())) {
+            if (hasPrivateModifier && resolver.isKotlinClass(value.getTypeElement())) {
                 if (!isKotlinValid(value.getTypeElement(), element)) {
                     messages.add(new ValidationError("Annotated fields must have public accessors", element));
                 }
