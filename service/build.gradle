@@ -11,7 +11,7 @@ compileTestJava {
 }
 
 dependencies {
-    api 'com.github.janet-io:janet:2.0.0'
+    api 'com.github.janet-io:janet:2.0.1'
     api 'com.github.janet-io.janet-converters:base-body:2.0.0'
     api 'com.github.janet-io.janet-converters:base-converter:2.0.0'
 }
