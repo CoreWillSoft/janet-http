@@ -12,9 +12,7 @@ import io.reactivex.Flowable
 
 private const val API_URL = "https://api.github.com"
 
-
 fun main(args: Array<String>) {
-
     val janet = Janet.Builder()
             .addService(HttpActionService(API_URL, OkClient(), GsonConverter(Gson())))
             .build()
@@ -34,8 +32,4 @@ fun main(args: Array<String>) {
                     .onSuccess { println("repos request finished $it") }
                     .onFail { _, t -> println("repos request exception $t") }
             )
-
-
 }
-
-
