@@ -79,7 +79,7 @@ public class ExampleAction {
 * provides useful `HttpException` for failed requests;
 * supports action inheritance 
 * based on annotation processing
-* consider using javac option `'-Ajanet.http.factory.class.suffix=MyLib'` or kotlin's `kapt.arguments{ arg(“janet.http.factory.class.suffix”, “MyLib”)})` for api libraries
+* consider using javac option `'-Ajanet.http.factory.class.suffix=MyLib'` or kotlin's `kapt.arguments{ arg(“janet.http.factory.class.suffix”, “MyLib”)})` for api libraries. See [Sample Library](sample-library/build.gradle)
 
 ### Kotlin support
 Kotlin action classes are supported except `internal` modifier. See [TestProgressAction](sample/src/main/java/io/janet/http/sample/action/TestProgressAction.kt) as example. 
