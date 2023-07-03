@@ -12,6 +12,7 @@ import java.util.List;
 import io.janet.ActionHolder;
 import io.janet.ActionService;
 import io.janet.ActionServiceWrapper;
+import io.janet.HttpActionService;
 import io.janet.JanetException;
 import io.janet.body.ActionBody;
 import io.janet.converter.Converter;
@@ -19,9 +20,8 @@ import io.janet.converter.ConverterException;
 import io.janet.http.HttpClient;
 import io.janet.http.model.Header;
 import io.janet.http.model.Request;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Predicate;
-import io.janet.HttpActionService;
+import io.reactivex.rxjava3.functions.BiFunction;
+import io.reactivex.rxjava3.functions.Predicate;
 
 public final class MockHttpActionService extends ActionServiceWrapper {
 
@@ -69,7 +69,7 @@ public final class MockHttpActionService extends ActionServiceWrapper {
                 try {
                     ActionService service = actionServiceFunc.apply(new MockClient(contracts), new MockConverter());
                     return new MockHttpActionService(service);
-                } catch (Exception e) { return null; }
+                } catch (Throwable e) { return null; }
             }
         }
     }
@@ -90,7 +90,7 @@ public final class MockHttpActionService extends ActionServiceWrapper {
                         Response response = contract.response;
                         return new io.janet.http.model.Response(request.getUrl(), response.status, response.reason, response.headers, new MockActionBody(response.body));
                     }
-                } catch (Exception e) {}
+                } catch (Throwable e) {}
             }
             throw new UnsupportedOperationException("There is no contract for " + request);
         }
